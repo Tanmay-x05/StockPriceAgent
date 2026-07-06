@@ -128,7 +128,14 @@ def run_agent(query: str):
 def main():
     parser = argparse.ArgumentParser(description="Groq-powered Stock Price Agent")
     parser.add_argument("--query", "-q", type=str, help="Single query to ask the agent")
-    args = parser.parse_args()
+    
+    # Check if run inside a Jupyter/IPython notebook environment
+    # Jupyter runs with arguments like "-f /Users/.../kernel-xxxx.json"
+    is_jupyter = any("jupyter" in arg or "ipykernel" in arg or "-f" == arg for arg in sys.argv)
+    if is_jupyter:
+        args = parser.parse_args(args=[])
+    else:
+        args = parser.parse_args()
 
     if args.query:
         print(f"Query: {args.query}\n")
